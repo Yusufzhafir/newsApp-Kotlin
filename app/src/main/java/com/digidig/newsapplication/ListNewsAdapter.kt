@@ -7,10 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.digidig.newsapplication.model.News
-import java.util.*
+import com.digidig.newsapplication.model.Article
 
-class ListNewsAdapter(private val listHero: ArrayList<News>)
+class ListNewsAdapter(
+    private val listHero: List<Article>,
+    private val photo: Int
+    )
     : RecyclerView.Adapter<ListNewsAdapter.ListViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -21,12 +23,13 @@ class ListNewsAdapter(private val listHero: ArrayList<News>)
         val tvDescription: TextView = itemView.findViewById(R.id.tv_item_description)
     }
 
+
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: News)
+        fun onItemClicked(data: Article)
     }
 
     @Override
@@ -40,13 +43,12 @@ class ListNewsAdapter(private val listHero: ArrayList<News>)
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
 
-        val (name, description, photo) = listHero[position]
+        val (title, description, urlToImage) = listHero[position]
         holder.imgPhoto.setImageResource(photo)
-        holder.tvName.text = name
+        holder.tvName.text = title
         holder.tvDescription.text = description
-
         holder.itemView.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "Kamu memilih " + listHero[holder.adapterPosition].name, Toast.LENGTH_SHORT).show()
+            Toast.makeText(holder.itemView.context, "Kamu memilih " + listHero[holder.adapterPosition].title, Toast.LENGTH_SHORT).show()
         }
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listHero[holder.adapterPosition]) }
     }
